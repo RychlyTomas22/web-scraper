@@ -1,0 +1,10 @@
+# Vygenerovana data
+article_links.json
+articles_data.json
+articles_data.json.tmp
+
+# Lokalni prostredi a Python cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]

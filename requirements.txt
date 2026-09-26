@@ -1,0 +1,12 @@
+# Sber odkazu a zpracovani clanku
+selenium
+beautifulsoup4
+pytz
+
+# Analyza a grafy
+pandas
+plotnine
+matplotlib
+
+# Volitelne: import do MySQL a SQL dotazy
+mysql-connector-python
