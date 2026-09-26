@@ -1,49 +1,49 @@
-# Web scraper a analýza článků iDNES.cz
+# iDNES.cz article scraper and analysis
 
-Starší lokální projekt v Pythonu pro sběr odkazů na články iDNES.cz, získání údajů z článků a jejich následnou analýzu, vizualizaci a volitelný import do MySQL.
+An older local Python project that collects links to iDNES.cz articles, extracts article data, and provides analysis, visualizations, and an optional MySQL import.
 
-> Tento repozitář je dodatečný upload již dokončeného projektu. Projekt původně nevznikal v Gitu, takže zde není jeho průběžná historie commitů. Skripty odrážejí původní lokální prostředí; jejich běh proti současné podobě webu nebyl znovu ověřen.
+> This repository is an upload of a completed older project. The project was not originally tracked with Git, so its earlier development history is unavailable. The scripts reflect the original local setup; they have not been revalidated against the current website.
 
-## Co obsahuje
+## Project files
 
-| Soubor | Úloha |
+| File | Purpose |
 | --- | --- |
-| `articlecolletor.py` | Sbírá odkazy na články podle kategorií a ukládá je do `article_links.json`. |
-| `articleprocessor.py` | Načítá odkazy, z článků získává nadpis, text, datum, počet obrázků a komentářů a ukládá je do `articles_data.json`. |
-| `cleaner.py` | Odstraňuje z `articles_data.json` záznamy bez textu a duplicitní titulky. Soubor přepisuje. |
-| `data_analyzer.py` | Vypisuje statistiky nad nasbíranými články. |
-| `data_visualizer.py` | Vytváří grafy z nasbíraných článků. |
-| `uploadToSQL.py` | Volitelně importuje články do MySQL. |
-| `QueryDB.py` | Spouští ukázkové SQL dotazy nad importovanými články. |
+| `articlecolletor.py` | Collects article links by category and saves them to `article_links.json`. |
+| `articleprocessor.py` | Reads those links, extracts titles, text, dates, image counts, and comment counts, and saves the results to `articles_data.json`. |
+| `cleaner.py` | Removes records without article text and duplicate titles from `articles_data.json`. It overwrites the file. |
+| `data_analyzer.py` | Prints statistics about the collected articles. |
+| `data_visualizer.py` | Generates charts from the collected articles. |
+| `uploadToSQL.py` | Optionally imports articles into MySQL. |
+| `QueryDB.py` | Runs example SQL queries against the imported articles. |
 
-## Požadavky
+## Requirements
 
-- Python 3 a balíčky z `requirements.txt`
-- Google Chrome a odpovídající ChromeDriver pro sběr článků
-- MySQL pouze pro `uploadToSQL.py` a `QueryDB.py`
+- Python 3 and the packages listed in `requirements.txt`
+- Google Chrome and a matching ChromeDriver for collecting articles
+- MySQL only if you want to use `uploadToSQL.py` and `QueryDB.py`
 
-Nainstalujte závislosti:
+Install the Python dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-V obou skriptech pro sběr jsou cesty k prohlížeči a ChromeDriveru pevně nastavené podle původního počítače. Před spuštěním upravte `chrome_options.binary_location` a `chrome_driver_path` podle svého prostředí. `articleprocessor.py` také nastavuje `cs_CZ.UTF-8`; pokud tento název locale systém nepodporuje, je potřeba toto nastavení upravit nebo odstranit (názvy českých měsíců skript převádí vlastní tabulkou).
+Both scraping scripts contain Chrome and ChromeDriver paths from the original computer. Before running them, adjust `chrome_options.binary_location` and `chrome_driver_path` for your machine. `articleprocessor.py` also sets the `cs_CZ.UTF-8` locale. If your system does not support that locale name, change or remove that setting; the script already parses Czech month names using its own lookup table.
 
-## Postup
+## Usage
 
-Příkazy spouštějte z kořenové složky projektu, protože skripty používají relativní cesty k souborům.
+Run the commands from the repository root because the scripts use relative paths for their data files.
 
-1. `python articlecolletor.py` vytvoří `article_links.json`.
-2. `python articleprocessor.py` načte odkazy a vytvoří `articles_data.json`.
-3. Volitelně spusťte `python cleaner.py`; předem si ponechte kopii dat, pokud chcete zachovat původní výstup.
-4. `python data_analyzer.py` vypíše statistiky.
-5. Pro `python data_visualizer.py` nejprve vytvořte složku `graphs/data_vizualizer/`, do které skript ukládá PNG grafy.
+1. Run `python articlecolletor.py` to create `article_links.json`.
+2. Run `python articleprocessor.py` to process the links and create `articles_data.json`.
+3. Optionally run `python cleaner.py`. Keep a copy of the original data first if you want to preserve it, because this step overwrites the JSON file.
+4. Run `python data_analyzer.py` to print statistics.
+5. Before running `python data_visualizer.py`, create the `graphs/data_vizualizer/` directory where it saves PNG charts.
 
-`article_links.json` a `articles_data.json` jsou generovaná data a v repozitáři nejsou. Sběr používá selektory původního webu a může vyžadovat úpravy, pokud se struktura stránek od té doby změnila.
+`article_links.json` and `articles_data.json` are generated files and are not included in the repository. The scraper uses selectors from the original website; they may need updating if the page structure has changed.
 
-## MySQL (volitelné)
+## MySQL (optional)
 
-Pro import je třeba mít vlastní databázi a tabulku `articles` se sloupci `title`, `article_text`, `image_count`, `time_date`, `comments_count` a `category`. SQL soubor pro vytvoření databáze ani data nejsou součástí repozitáře.
+The import requires your own database and an `articles` table with the columns `title`, `article_text`, `image_count`, `time_date`, `comments_count`, and `category`. Neither a database creation script nor the collected data is included in this repository.
 
-Před použitím nastavte připojení v `uploadToSQL.py` a `QueryDB.py` podle své lokální MySQL. Potom lze spustit `python uploadToSQL.py` a `python QueryDB.py`. Import očekává již vytvořený `articles_data.json`.
+Configure the connection in both `uploadToSQL.py` and `QueryDB.py` for your local MySQL installation. You can then run `python uploadToSQL.py` followed by `python QueryDB.py`. The import expects an existing `articles_data.json`.
