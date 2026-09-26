@@ -42,6 +42,10 @@ Run the commands from the repository root because the scripts use relative paths
 
 `article_links.json` and `articles_data.json` are generated files and are not included in the repository. The scraper uses selectors from the original website; they may need updating if the page structure has changed.
 
+## Known limitation
+
+`articleprocessor.py` removes links from its processing queue before successful extraction is confirmed. If a run fails or is interrupted while other workers are saving progress, some unfinished links can disappear from the saved queue. Keep a backup of `article_links.json` before processing a large collection.
+
 ## MySQL (optional)
 
 The import requires your own database and an `articles` table with the columns `title`, `article_text`, `image_count`, `time_date`, `comments_count`, and `category`. Neither a database creation script nor the collected data is included in this repository.
